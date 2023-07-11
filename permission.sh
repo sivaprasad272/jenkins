@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Get the current username
-username=$(whoami)
+# Grant sudoers permission to the current user without password prompt
+echo "$USER ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USER
+sudo chmod 0440 /etc/sudoers.d/$USER
 
-# Grant sudoers permission to the current user
-echo "$username ALL=(ALL:ALL) ALL" | sudo tee -a /etc/sudoers
+# Run the rest of your commands that require sudo
+# ...
