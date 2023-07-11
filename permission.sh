@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo usermod -aG sudo username
+sudo usermod -aG sudo jenkins
 
