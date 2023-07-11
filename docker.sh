@@ -1,6 +1,6 @@
 
 
 # Add current user to the docker group
-sudo usermod -a -G docker $jenkins
+sudo -S usermod -a -G docker $jenkins
 
-sudo systemctl restart docker
+sudo -S systemctl restart docker
