@@ -11,10 +11,10 @@ RUN apt-get install -y openjdk-11-jdk
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
 # Clone a Git repository (replace <repository_url> with your repository URL)
-RUN git clone <repository_url>
+#RUN git clone <repository_url>
 
 # Change the working directory to the cloned repository
-WORKDIR /path/to/cloned/repository
+#WORKDIR /path/to/cloned/repository
 
 # Add any additional commands you need here
 
