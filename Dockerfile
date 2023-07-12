@@ -1,12 +1,22 @@
-FROM ubuntu: latest
+FROM ubuntu:latest
 
-# Install Git
-RUN apt-get update && apt-get install -y git
+# Update the package lists and install Git
+RUN apt-get update && \
+    apt-get install -y git
 
-# Install Docker
-RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-RUN apt-get update && apt-get install -y docker-ce
+# Install Java
+RUN apt-get install -y openjdk-11-jdk
 
-CMD ["echo", "Hello, Ubuntu!"]
+# Set the JAVA_HOME environment variable
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+
+# Clone a Git repository (replace <repository_url> with your repository URL)
+RUN git clone <repository_url>
+
+# Change the working directory to the cloned repository
+WORKDIR /path/to/cloned/repository
+
+# Add any additional commands you need here
+
+# Define the command to be executed when the container starts
+CMD ["/bin/bash"]
