@@ -1,7 +1,8 @@
 pipeline {
   agent any
-environment {
+  environment {
     DOCKER-USERID='docker-hub-credentials'
+    }
   stages {
     stage('Clone Git') {
       steps {
