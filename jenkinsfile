@@ -20,6 +20,7 @@ environment {
         script {
           docker.withRegistry('https://registry.hub.docker.com', '$DOCKER-USERID') {
             dockerImage.push()
+            }
           }
         }
       }
