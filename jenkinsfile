@@ -48,7 +48,7 @@ pipeline {
                     sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${ecrImageUri}"
                 
                 // Push the Docker image to AWS ECR
-                    sh "docker push ${ecrImageUri}
+                    sh "docker push ${ecrImageUri} //
                 }
             }
         }
