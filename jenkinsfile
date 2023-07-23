@@ -37,7 +37,7 @@ pipeline {
             steps { 
                 script {
                     def awsRegion = 'us-east-1'
-                    def awsAccountId = 'AKIA4JQTP25TM2FVNZUK'
+                    def awsAccountId = '845075699558'
                     def ecrRepoName = 'jenkins'
                 
                 // Authenticate Docker client to AWS ECR
@@ -45,10 +45,10 @@ pipeline {
                 
                 // Tag the Docker image with the ECR repository URI
                     def ecrImageUri = "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepoName}:${DOCKER_IMAGE_TAG}"
-                    sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${845075699558.dkr.ecr.ap-south-1.amazonaws.com/jenkins}"
+                    sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${ecrImageUri}"
                 
                 // Push the Docker image to AWS ECR
-                    sh "docker push ${845075699558.dkr.ecr.ap-south-1.amazonaws.com/jenkins}
+                    sh "docker push ${ecrImageUri}
                 }
             }
         }
