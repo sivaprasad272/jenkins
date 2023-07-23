@@ -68,7 +68,7 @@ pipeline {
                 }
             }
         }
-        stage('Clean Up Local Image') {
+        stage('Clean Up Local container') {
             steps {
                 script {
                     sh "docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
