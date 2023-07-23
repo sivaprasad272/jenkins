@@ -49,6 +49,13 @@ pipeline {
                 }
             }
         }
+        stage('Clean Up Local Image') {
+            steps {
+                script {
+                    sh "docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                }
+            }
+        }
         stage('run docker container') {
             steps {
                 script {
