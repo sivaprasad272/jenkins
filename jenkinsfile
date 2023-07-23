@@ -33,6 +33,25 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image to aws ecr') {
+            steps { 
+                script {
+                    def awsRegion = 'us-east-1'
+                    def awsAccountId = 'AKIA4JQTP25TM2FVNZUK'
+                    def ecrRepoName = 'jenkins'
+                
+                // Authenticate Docker client to AWS ECR
+                    sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 845075699558.dkr.ecr.us-east-1.amazonaws.com"
+                
+                // Tag the Docker image with the ECR repository URI
+                    def ecrImageUri = "${awsAccountId}.dkr.ecr.${awsRegion}.amazonaws.com/${ecrRepoName}:${DOCKER_IMAGE_TAG}"
+                    sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${845075699558.dkr.ecr.ap-south-1.amazonaws.com/jenkins}"
+                
+                // Push the Docker image to AWS ECR
+                    sh "docker push ${845075699558.dkr.ecr.ap-south-1.amazonaws.com/jenkins}
+                }
+            }
+        }
         stage('Clean Up Local Image') {
             steps {
                 script {
@@ -61,6 +80,16 @@ pipeline {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/',) {
                         sh "docker run -itd  ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash"
+                    }
+                }
+            }
+        }   
+         stage('remove docker container') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/',) {
+                        sh "docker stop ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+                        sh "docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                     }
                 }
             }
