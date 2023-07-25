@@ -62,7 +62,7 @@ pipeline {
         stage('pull Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', ) {
+                    docker.withRegistry('https://hub.docker.com/repository/docker/sivaprasad272/privaterepo' ) {
                         sh "docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                     }
                 }
