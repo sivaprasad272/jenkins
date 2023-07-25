@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/',) {
-                        sh "docker run -it  ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash "
+                        sh "docker run -it --name ${DOCKER_IMAGE_TAG}  ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash "
                     }
                 }
             }
