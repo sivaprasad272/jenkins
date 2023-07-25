@@ -79,7 +79,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/',) {
-                        sh "docker run -it  ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} command"
+                        sh "docker run -it  ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} "
                     }
                 }
             }
@@ -88,7 +88,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/',) {
-                        sh "docker stop ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                         sh "docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                     }
                 }
