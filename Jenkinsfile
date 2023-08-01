@@ -33,7 +33,7 @@ pipeline {
                 }
             }
         }
-        '''
+        //
         stage('Push Docker Image to aws ecr') {
             steps { 
                 script {
@@ -52,7 +52,7 @@ pipeline {
                     sh "docker push ${ecrImageUri}" //
                 }
             }
-        } '''
+        } //
         stage('Clean Up Local Image') {
             steps {
                 script {
