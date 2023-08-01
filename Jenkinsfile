@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         DOCKER_IMAGE_NAME = 'sivaprasad272/privaterepo'
         DOCKER_IMAGE_TAG = "latest-${env.BUILD_NUMBER}"
         GIT_URL = 'https://github.com/sivaprasad272/jenkins.git'
