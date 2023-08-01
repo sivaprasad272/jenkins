@@ -16,19 +16,17 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                     steps {
+                script {                 
                     // Load the config.json file into the correct location
                     withCredentials([file(credentialsId: 'docker-config', variable: 'DOCKER_CONFIG_JSON')]) {
                     sh 'echo "$DOCKER_CONFIG_JSON" > $HOME/.docker/config.json'
-                }
+                    }
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
                         sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                     }
                 }
             }
-        }
-        
+        }        
         stage('Push Docker Image') {
             steps {
                 script {
@@ -65,17 +63,9 @@ pipeline {
                 }
             }
         }
-        stage('Prepare Environment') {
+        stage('Pull Docker Image') {
             steps {
-                // Copy the config.json file to the Jenkins workspace
-                stash(name: 'config', includes: '.docker/config.json')
-            }
-        }
-        stage('Build and Push Docker Image') {
-            steps {
-                // Unstash the config.json file in the Docker container
-                unstash('config')
-                sh 'docker push https://hub.docker.com/repository/docker/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG'
+                sh 'docker pull https://hub.docker.com/repository/docker/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG'
             }
         }
         stage('Clean Up Local container') {
