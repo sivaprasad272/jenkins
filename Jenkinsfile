@@ -33,7 +33,7 @@ pipeline {
                 }
             }
         }
-'''
+        '''
         stage('Push Docker Image to aws ecr') {
             steps { 
                 script {
