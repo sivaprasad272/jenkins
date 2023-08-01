@@ -52,7 +52,7 @@ pipeline {
                     sh "docker push ${ecrImageUri}"
                 }
             }
-        }//
+        } //
         stage('Clean Up Local Image') {
             steps {
                 sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
@@ -84,4 +84,3 @@ pipeline {
         }
     }
 }
-
