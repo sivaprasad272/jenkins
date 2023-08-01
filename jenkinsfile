@@ -33,6 +33,7 @@ pipeline {
                 }
             }
         }
+'''
         stage('Push Docker Image to aws ecr') {
             steps { 
                 script {
@@ -51,7 +52,7 @@ pipeline {
                     sh "docker push ${ecrImageUri}" //
                 }
             }
-        }
+        } '''
         stage('Clean Up Local Image') {
             steps {
                 script {
@@ -59,13 +60,17 @@ pipeline {
                 }
             }
         }
-        stage('pull Docker Image') {
+        stage('Prepare Environment') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        sh "docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-                    }
-                }
+                // Copy the config.json file to the Jenkins workspace
+                stash(name: 'config', includes: '.docker/config.json')
+            }
+        }
+        stage('Build and Push Docker Image') {
+            steps {
+                // Unstash the config.json file in the Docker container
+                unstash('config')
+                sh 'docker push https://hub.docker.com/repository/docker/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG'
             }
         }
         stage('Clean Up Local container') {
