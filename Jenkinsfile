@@ -1,68 +1,44 @@
 pipeline {
     agent any
-    
-    environment {
-        DOCKER_IMAGE_NAME = 'sivaprasad272/privaterepo'
-        DOCKER_IMAGE_TAG = "latest-${env.BUILD_NUMBER}"
-        GIT_URL = 'https://github.com/sivaprasad272/jenkins.git'
-    }
-    
-    stages {
-        stage('Cloning Git Code') {
-            steps {
-                git url: "${GIT_URL}"
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Load the Docker Hub credentials into the correct location
-                    withCredentials([file(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-                        sh 'echo "$DOCKER_HUB_CREDENTIALS" > $HOME/.docker/config.json'
-                    }
 
-                    // Build the Docker image
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+    environment {
+        DOCKER_REGISTRY_URL = 'https://hub.docker.com/repository/docker/sivaprasad272/'
+        DOCKER_HUB_CREDENTIALS = null
+    }
+
+    stages {
+        stage('Load Docker Hub Credentials') {
+            steps {
+                // Load the secret file into the environment variable
+                withCredentials([file(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_CREDENTIALS')]) {
+                    // The content of the secret file is now available in the 'DOCKER_HUB_CREDENTIALS' environment variable
                 }
             }
         }
-        stage('Push Docker Image to Docker Hub') {
+        stage('Build and Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-                    }
+                    // Authenticate Docker client to Docker Hub
+                    sh "echo '$DOCKER_HUB_CREDENTIALS' > $HOME/.docker/config.json"
+
+                    // Build and push the Docker image
+                    sh "docker build -t $DOCKER_REGISTRY_URL/my_image:latest ."
+                    sh "docker push $DOCKER_REGISTRY_URL/my_image:latest"
                 }
             }
         }
-        stage('Clean Up Local Image') {
-            steps {
-                sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
-        stage('Pull Docker Image from Docker Hub') {
-            steps {
-                sh "docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
-        stage('Clean Up Local Container') {
-            steps {
-                sh "docker rm -f ${DOCKER_IMAGE_NAME}"
-            }
-        }
-        stage('Run Docker Container') {
+        stage('Pull Docker Image from Private Repo') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        sh "docker run -itd --name ${DOCKER_IMAGE_TAG} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash"
-                    }
+                    // Authenticate Docker client to Docker Hub for pulling from private repo
+                    sh "echo '$DOCKER_HUB_CREDENTIALS' > $HOME/.docker/config.json"
+
+                    // Pull the Docker image from the private repository
+                    sh "docker pull $DOCKER_REGISTRY_URL/my_image:latest"
                 }
             }
         }
-        stage('Remove Docker Container') {
-            steps {
-                sh "docker rm -f ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
+        // Add more stages as needed for your pipeline
     }
 }
+
