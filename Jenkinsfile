@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {                 
                     // Load the config.json file into the correct location
-                    withCredentials([file(credentialsId: 'docker-config', variable: 'DOCKER_CONFIG_JSON')]) {
+                    withCredentials([file(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB-CREDENTIALS')]) {
                     sh 'echo "$DOCKER_CONFIG_JSON" > $HOME/.docker/config.json'
                     }
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
