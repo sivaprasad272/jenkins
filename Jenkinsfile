@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY_URL = 'https://hub.docker.com/repository/docker/sivaprasad272/privaterepo/'
+        DOCKER_REGISTRY_URL = 'https://hub.docker.com/repository/docker/sivaprasad272/privaterepo'
     }
 
     stages {
