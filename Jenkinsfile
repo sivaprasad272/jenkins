@@ -17,6 +17,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                     steps {
+                // Load the config.json file into the correct location
+                withCredentials([file(credentialsId: 'docker-config', variable: 'DOCKER_CONFIG_JSON')]) {
+                    sh 'echo "$DOCKER_CONFIG_JSON" > $HOME/.docker/config.json'
+                }
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
                         sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                     }
