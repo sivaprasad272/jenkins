@@ -19,8 +19,8 @@ pipeline {
             steps {
                 script {
                     // Build and push the Docker image
-                    sh "docker build -t ${DOCKER_REGISTRY_URL}my_image:latest ."
-                    sh "docker push ${DOCKER_REGISTRY_URL}my_image:latest"
+                    sh "docker build -t ${DOCKER_REGISTRY_URL}:latest ."
+                    sh "docker push ${DOCKER_REGISTRY_URL}:latest"
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
                     sh 'echo "$DOCKER_HUB_CREDENTIALS" > $HOME/.docker/config.json'
 
                     // Pull the Docker image from the private repository
-                    sh "docker pull ${DOCKER_REGISTRY_URL}my_image:latest"
+                    sh "docker pull ${DOCKER_REGISTRY_URL}:latest"
                 }
             }
         }
