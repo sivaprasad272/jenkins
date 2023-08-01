@@ -1,7 +1,1 @@
-{
-  "DOCKER_IMAGE_NAME": "${DOCKER_IMAGE_NAME}",
-  "DOCKER_IMAGE_TAG": "${DOCKER_IMAGE_TAG}",
-  "DOCKER_REGISTRY": "https://hub.docker.com/repository/docker/sivaprasad272/privaterepo/",
-  "DOCKER_USERNAME": "sivaprasad272",
-  "DOCKER_PASSWORD": "prasad272@"
-}
+
