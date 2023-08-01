@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Authenticate Docker client to Docker Hub
-                    sh "rm -rf $HOME/.docker/config.json
+                    sh "rm -rf $HOME/.docker/config.json"
                     sh "touch $HOME/.docker/config.json"
                     sh "echo '$DOCKER_HUB_CREDENTIALS' > $HOME/.docker/config.json"
 
