@@ -5,9 +5,6 @@ pipeline {
         DOCKER_IMAGE_NAME = 'sivaprasad272/privaterepo'
         DOCKER_IMAGE_TAG = "latest-${env.BUILD_NUMBER}"
         GIT_URL = 'https://github.com/sivaprasad272/jenkins.git'
-        AWS_REGION = 'us-east-1'
-        AWS_ACCOUNT_ID = 'your_aws_account_id'
-        ECR_REPO_NAME = 'jenkins'
     }
     
     stages {
@@ -38,21 +35,6 @@ pipeline {
                 }
             }
         }
-        //stage('Push Docker Image to AWS ECR') {
-            steps { 
-                script {
-                    // Authenticate Docker client to AWS ECR
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-
-                    // Tag the Docker image with the ECR repository URI
-                    def ecrImageUri = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}:${DOCKER_IMAGE_TAG}"
-                    sh "docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ${ecrImageUri}"
-
-                    // Push the Docker image to AWS ECR
-                    sh "docker push ${ecrImageUri}"
-                }
-            }
-        } //
         stage('Clean Up Local Image') {
             steps {
                 sh "docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
